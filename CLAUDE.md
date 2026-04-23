@@ -15,8 +15,12 @@ Sito web statico per esercitarsi con le 28 lettere dell'alfabeto arabo.
 ```
 .
 ├── index.html              # Pagina singola, tutto inline (CSS + JS)
+├── manifest.json           # Web App Manifest (PWA)
+├── sw.js                   # Service worker — cache offline
 ├── generate_audio.ps1      # Script per (ri)generare gli MP3
+├── generate_icons.ps1      # Script per (ri)generare le icone PNG
 ├── audio/                  # 28 file MP3 (alif.mp3, ba.mp3, ..., ya.mp3)
+├── icons/                  # icon-192.png, icon-512.png (lettera shīn su sfondo bianco)
 └── CLAUDE.md               # Questo file
 ```
 
@@ -24,6 +28,7 @@ Sito web statico per esercitarsi con le 28 lettere dell'alfabeto arabo.
 - HTML + CSS + JavaScript vanilla, nessuna dipendenza, nessun build step.
 - Single file (`index.html`) con CSS e JS inline.
 - Responsive mobile-first, target touch ≥48px.
+- PWA: installabile su Android (Chrome) e iOS (Safari → Aggiungi a schermata Home), funziona offline.
 
 ## Audio
 - **Sorgente MP3**: Google Translate TTS (`translate.google.com/translate_tts`) con `tl=ar` e `client=tw-ob`. API non ufficiale — ok per uso personale, da valutare per uso pubblico/commerciale.
@@ -41,8 +46,14 @@ Lo script salta i file già esistenti. Pausa 600 ms tra le richieste.
 
 Per cambiare il testo TTS (es. sillaba più lunga, vocale diversa), modifica l'array `$letters` in `generate_audio.ps1` — ogni voce è `@{ id = "..."; cp = @(codepoint1, codepoint2, ...) }`.
 
+## PWA e service worker
+- Cache offline: `sw.js` mette in cache `index.html`, `manifest.json`, le icone e tutti i 28 MP3 al primo caricamento.
+- Strategia: cache-first — se una risorsa è in cache viene servita senza rete.
+- **Quando si aggiorna il sito**: incrementare `CACHE` in `sw.js` (es. `arabobase-v2`) per invalidare la cache degli utenti esistenti.
+- Icone generate con `generate_icons.ps1` (usa `System.Drawing` di .NET, richiede font "Traditional Arabic" installato su Windows — presente di default su Windows 10/11).
+
 ## Pubblicazione
-Hosting statico: GitHub Pages, Netlify, Cloudflare Pages. Carica solo `index.html` e la cartella `audio/`. Lo script `.ps1` e questo `CLAUDE.md` non servono in produzione.
+Deploy su Cloudflare Pages (`arabobase.pages.dev`), collegato al repo GitHub `gabrielesassi/arabobase`. Ogni `git push` su `main` rideploya automaticamente. In produzione servono: `index.html`, `manifest.json`, `sw.js`, `audio/`, `icons/`. Gli script `.ps1` e `CLAUDE.md` non servono.
 
 ## Architettura JS (index.html)
 
