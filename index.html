@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alfabeto Arabo — Esercizi</title>
+<style>
+  :root {
+    --bg-1: #0f172a;
+    --bg-2: #1e293b;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #0ea5e9;
+    --accent-2: #6366f1;
+    --success: #10b981;
+    --shadow: 0 10px 30px rgba(2, 6, 23, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    min-height: 100%;
+  }
+
+  body {
+    background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+  }
+
+  header {
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    color: #e2e8f0;
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    margin: 0 0 6px;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.95rem;
+  }
+
+  .modes {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 6px;
+    border-radius: 14px;
+    margin: 18px 0 22px;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 12px 14px;
+    border: none;
+    background: transparent;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mode-btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 32px 24px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .instruction {
+    color: var(--muted);
+    font-size: 0.95rem;
+    text-align: center;
+    margin: 0;
+  }
+
+  .letter-display {
+    font-family: "Amiri", "Scheherazade New", "Traditional Arabic", serif;
+    font-size: clamp(8rem, 30vw, 12rem);
+    line-height: 1;
+    color: var(--text);
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .letter-hidden {
+    font-size: clamp(4rem, 14vw, 6rem);
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  .letter-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent-2);
+    min-height: 1.6em;
+    text-align: center;
+  }
+
+  .letter-name.placeholder {
+    color: var(--muted);
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn {
+    flex: 1 1 140px;
+    min-height: 48px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn:active { transform: translateY(1px); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  }
+
+  .btn-primary:hover { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45); }
+
+  .btn-secondary {
+    background: #f1f5f9;
+    color: var(--text);
+  }
+
+  .btn-secondary:hover { background: #e2e8f0; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid #e2e8f0;
+  }
+
+  .btn-ghost:hover { background: #f8fafc; }
+
+  .hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+    margin: 0;
+  }
+
+  footer {
+    margin-top: 24px;
+    color: #64748b;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 24px 16px; }
+    .btn { flex: 1 1 100%; }
+    .modes { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Alfabeto Arabo</h1>
+    <p>Esercitati a riconoscere e scrivere le lettere</p>
+  </header>
+
+  <div class="modes" role="tablist">
+    <button class="mode-btn active" data-mode="see" role="tab" aria-selected="true">
+      Guarda e pronuncia
+    </button>
+    <button class="mode-btn" data-mode="listen" role="tab" aria-selected="false">
+      Ascolta e scrivi
+    </button>
+  </div>
+
+  <div class="card">
+    <p class="instruction" id="instruction">Clicca "Nuova lettera" per iniziare</p>
+
+    <div class="letter-display" id="letter-display" dir="rtl" lang="ar">؟</div>
+
+    <div class="letter-name placeholder" id="letter-name">&nbsp;</div>
+
+    <div class="controls" id="controls"></div>
+
+    <p class="hint" id="hint"></p>
+  </div>
+
+  <footer>
+    28 lettere · audio locale con fallback al browser
+  </footer>
+
+<script>
+  const LETTERS = [
+    { id: "alif",  ar: "ا", name: "alif",   speak: "ألف" },
+    { id: "ba",    ar: "ب", name: "bāʾ",    speak: "باء" },
+    { id: "ta",    ar: "ت", name: "tāʾ",    speak: "تاء" },
+    { id: "tha",   ar: "ث", name: "thāʾ",   speak: "ثاء" },
+    { id: "jim",   ar: "ج", name: "jīm",    speak: "جيم" },
+    { id: "hha",   ar: "ح", name: "ḥāʾ",    speak: "حاء" },
+    { id: "kha",   ar: "خ", name: "khāʾ",   speak: "خاء" },
+    { id: "dal",   ar: "د", name: "dāl",    speak: "دال" },
+    { id: "dhal",  ar: "ذ", name: "dhāl",   speak: "ذال" },
+    { id: "ra",    ar: "ر", name: "rāʾ",    speak: "راء" },
+    { id: "zay",   ar: "ز", name: "zāy",    speak: "زاي" },
+    { id: "sin",   ar: "س", name: "sīn",    speak: "سين" },
+    { id: "shin",  ar: "ش", name: "shīn",   speak: "شين" },
+    { id: "sad",   ar: "ص", name: "ṣād",    speak: "صاد" },
+    { id: "dad",   ar: "ض", name: "ḍād",    speak: "ضاد" },
+    { id: "taa",   ar: "ط", name: "ṭāʾ",    speak: "طاء" },
+    { id: "zaa",   ar: "ظ", name: "ẓāʾ",    speak: "ظاء" },
+    { id: "ayn",   ar: "ع", name: "ʿayn",   speak: "عين" },
+    { id: "ghayn", ar: "غ", name: "ghayn",  speak: "غين" },
+    { id: "fa",    ar: "ف", name: "fāʾ",    speak: "فاء" },
+    { id: "qaf",   ar: "ق", name: "qāf",    speak: "قاف" },
+    { id: "kaf",   ar: "ك", name: "kāf",    speak: "كاف" },
+    { id: "lam",   ar: "ل", name: "lām",    speak: "لام" },
+    { id: "mim",   ar: "م", name: "mīm",    speak: "ميم" },
+    { id: "nun",   ar: "ن", name: "nūn",    speak: "نون" },
+    { id: "ha",    ar: "ه", name: "hāʾ",    speak: "هاء" },
+    { id: "waw",   ar: "و", name: "wāw",    speak: "واو" },
+    { id: "ya",    ar: "ي", name: "yāʾ",    speak: "ياء" },
+  ];
+
+  const state = {
+    mode: "see",        // "see" | "listen"
+    current: null,
+    recentlyShown: [],  // avoid immediate repeats
+    revealed: false,
+  };
+
+  const el = {
+    display:    document.getElementById("letter-display"),
+    name:       document.getElementById("letter-name"),
+    controls:   document.getElementById("controls"),
+    instruction:document.getElementById("instruction"),
+    hint:       document.getElementById("hint"),
+    modeBtns:   document.querySelectorAll(".mode-btn"),
+  };
+
+  function pickRandomLetter() {
+    const pool = LETTERS.filter(l => !state.recentlyShown.includes(l.ar));
+    const source = pool.length ? pool : LETTERS;
+    const chosen = source[Math.floor(Math.random() * source.length)];
+    state.recentlyShown.push(chosen.ar);
+    if (state.recentlyShown.length > 5) state.recentlyShown.shift();
+    return chosen;
+  }
+
+  let currentAudio = null;
+
+  function speak(letter) {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
+    }
+    const audio = new Audio(`audio/${letter.id}.mp3`);
+    currentAudio = audio;
+    let fellBack = false;
+    const fallback = () => {
+      if (fellBack) return;
+      fellBack = true;
+      speakWithTTS(letter);
+    };
+    audio.addEventListener("error", fallback);
+    audio.play().catch(fallback);
+  }
+
+  function speakWithTTS(letter) {
+    if (!("speechSynthesis" in window)) {
+      el.hint.textContent = "Audio non disponibile su questo browser.";
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(letter.speak);
+    utter.lang = "ar-SA";
+    utter.rate = 0.8;
+    const voices = window.speechSynthesis.getVoices();
+    const arVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith("ar"));
+    if (arVoice) utter.voice = arVoice;
+    window.speechSynthesis.speak(utter);
+  }
+
+  function renderControls() {
+    el.controls.innerHTML = "";
+
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "btn btn-primary";
+    nextBtn.textContent = state.current ? "Nuova lettera" : "Inizia";
+    nextBtn.addEventListener("click", newLetter);
+    el.controls.appendChild(nextBtn);
+
+    if (state.mode === "see") {
+      const revealBtn = document.createElement("button");
+      revealBtn.className = "btn btn-secondary";
+      revealBtn.textContent = state.revealed ? "Ascolta" : "Mostra nome";
+      revealBtn.disabled = !state.current;
+      revealBtn.addEventListener("click", () => {
+        if (!state.current) return;
+        if (!state.revealed) {
+          state.revealed = true;
+          el.name.textContent = state.current.name;
+          el.name.classList.remove("placeholder");
+        }
+        speak(state.current);
+      });
+      el.controls.appendChild(revealBtn);
+    } else {
+      const playBtn = document.createElement("button");
+      playBtn.className = "btn btn-secondary";
+      playBtn.textContent = "Riascolta";
+      playBtn.disabled = !state.current;
+      playBtn.addEventListener("click", () => state.current && speak(state.current));
+      el.controls.appendChild(playBtn);
+
+      const revealBtn = document.createElement("button");
+      revealBtn.className = "btn btn-ghost";
+      revealBtn.textContent = state.revealed ? "Nascondi" : "Mostra lettera";
+      revealBtn.disabled = !state.current;
+      revealBtn.addEventListener("click", () => {
+        state.revealed = !state.revealed;
+        renderCurrent();
+        renderControls();
+      });
+      el.controls.appendChild(revealBtn);
+    }
+  }
+
+  function renderCurrent() {
+    if (!state.current) {
+      el.display.textContent = "؟";
+      el.display.classList.add("letter-hidden");
+      el.name.innerHTML = "&nbsp;";
+      el.name.classList.add("placeholder");
+      return;
+    }
+
+    if (state.mode === "see") {
+      el.display.textContent = state.current.ar;
+      el.display.classList.remove("letter-hidden");
+      if (state.revealed) {
+        el.name.textContent = state.current.name;
+        el.name.classList.remove("placeholder");
+      } else {
+        el.name.textContent = "Pronuncia ad alta voce, poi mostra il nome";
+        el.name.classList.add("placeholder");
+      }
+    } else {
+      if (state.revealed) {
+        el.display.textContent = state.current.ar;
+        el.display.classList.remove("letter-hidden");
+        el.name.textContent = state.current.name;
+        el.name.classList.remove("placeholder");
+      } else {
+        el.display.textContent = "🔊";
+        el.display.classList.add("letter-hidden");
+        el.name.textContent = "Scrivi la lettera che senti";
+        el.name.classList.add("placeholder");
+      }
+    }
+  }
+
+  function updateInstruction() {
+    if (state.mode === "see") {
+      el.instruction.textContent = "Leggi la lettera ad alta voce, poi verifica la pronuncia.";
+    } else {
+      el.instruction.textContent = "Ascolta l'audio e scrivi la lettera su carta.";
+    }
+  }
+
+  function newLetter() {
+    state.current = pickRandomLetter();
+    state.revealed = false;
+    renderCurrent();
+    renderControls();
+    if (state.mode === "listen") {
+      setTimeout(() => speak(state.current), 150);
+    }
+  }
+
+  el.modeBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      el.modeBtns.forEach(b => {
+        b.classList.remove("active");
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.classList.add("active");
+      btn.setAttribute("aria-selected", "true");
+      state.mode = btn.dataset.mode;
+      state.current = null;
+      state.revealed = false;
+      updateInstruction();
+      renderCurrent();
+      renderControls();
+    });
+  });
+
+  if ("speechSynthesis" in window) {
+    window.speechSynthesis.onvoiceschanged = () => {};
+    window.speechSynthesis.getVoices();
+  }
+
+  updateInstruction();
+  renderCurrent();
+  renderControls();
+</script>
+</body>
+</html>
